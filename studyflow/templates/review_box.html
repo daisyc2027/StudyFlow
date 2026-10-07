@@ -1,0 +1,9 @@
+<div class="review-summary" data-review-target="{{ target.id }}">
+<h3>Follow-up reviews: {{ 'On' if review.enabled else 'Off' }}</h3>
+<p class="tag">{{ review.status }}{% if review.due %} · {{ review.timing }}{% endif %}</p>
+{% if review.due %}<p>Recommended next review: <strong>{{ review.due }}</strong>{% if review.scheduled %} · Scheduled: {{ review.scheduled }}{% endif %}</p>{% endif %}
+<p class="muted">{{ review.reason }}</p>
+{% if review.state and review.state.awaiting_outcome %}<p>Review completed without an outcome. Recurrence is paused; a genuine rated completed practice can resume it.</p>{% endif %}
+<p class="muted">Reviews authorize ongoing 30-minute tasks in addition to the finite initial practice budget. Intervals are planning heuristics, not a measure of mastery.</p>
+{% if not target.archived and not target.subject.archived %}<form method="post" action="{{ url_for('reviews.toggle',identifier=target.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="request_id" value="{{ review.request_id }}"><input type="hidden" name="version" value="{{ target.version }}"><input type="hidden" name="enabled" value="{{ 'off' if review.enabled else 'on' }}"><button class="quiet">{{ 'Disable' if review.enabled else 'Enable' }} follow-up reviews</button></form>{% endif %}
+</div>

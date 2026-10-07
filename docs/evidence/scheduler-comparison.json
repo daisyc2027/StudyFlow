@@ -1,0 +1,115 @@
+[
+  {
+    "scenario": "ample capacity",
+    "adaptive_initial": {
+      "hard_violations": 0,
+      "remaining_minutes": 0,
+      "priority_weighted_minutes": 7200,
+      "existing_sessions_released_or_moved": 0
+    },
+    "fifo_initial": {
+      "hard_violations": 0,
+      "remaining_minutes": 0,
+      "priority_weighted_minutes": 7200,
+      "existing_sessions_released_or_moved": 0
+    },
+    "oracle_max_allocated_minutes": 120,
+    "heuristic_allocation_gap_minutes": 0
+  },
+  {
+    "scenario": "limited capacity favours need",
+    "adaptive_initial": {
+      "hard_violations": 0,
+      "remaining_minutes": 60,
+      "priority_weighted_minutes": 5400,
+      "existing_sessions_released_or_moved": 0
+    },
+    "fifo_initial": {
+      "hard_violations": 0,
+      "remaining_minutes": 60,
+      "priority_weighted_minutes": 1800,
+      "existing_sessions_released_or_moved": 0
+    },
+    "oracle_max_allocated_minutes": 60,
+    "heuristic_allocation_gap_minutes": 0
+  },
+  {
+    "scenario": "FIFO fits urgent work better",
+    "adaptive_initial": {
+      "hard_violations": 0,
+      "remaining_minutes": 30,
+      "priority_weighted_minutes": 2100,
+      "existing_sessions_released_or_moved": 0
+    },
+    "fifo_initial": {
+      "hard_violations": 0,
+      "remaining_minutes": 0,
+      "priority_weighted_minutes": 3360,
+      "existing_sessions_released_or_moved": 0
+    },
+    "oracle_max_allocated_minutes": 60,
+    "heuristic_allocation_gap_minutes": 30
+  },
+  {
+    "scenario": "zero availability change",
+    "adaptive_initial": {
+      "hard_violations": 0,
+      "remaining_minutes": 0,
+      "priority_weighted_minutes": 5700,
+      "existing_sessions_released_or_moved": 0
+    },
+    "fifo_initial": {
+      "hard_violations": 0,
+      "remaining_minutes": 0,
+      "priority_weighted_minutes": 5700,
+      "existing_sessions_released_or_moved": 0
+    },
+    "adaptive_after_change": {
+      "hard_violations": 0,
+      "remaining_minutes": 30,
+      "priority_weighted_minutes": 3600,
+      "existing_sessions_released_or_moved": 2
+    },
+    "fifo_nonadaptive_after_change": {
+      "hard_violations": 1,
+      "remaining_minutes": 0,
+      "priority_weighted_minutes": 5700,
+      "existing_sessions_released_or_moved": 0
+    },
+    "oracle_max_allocated_minutes": 90,
+    "heuristic_allocation_gap_minutes": 0
+  },
+  {
+    "scenario": "no capacity",
+    "adaptive_initial": {
+      "hard_violations": 0,
+      "remaining_minutes": 30,
+      "priority_weighted_minutes": 0,
+      "existing_sessions_released_or_moved": 0
+    },
+    "fifo_initial": {
+      "hard_violations": 0,
+      "remaining_minutes": 30,
+      "priority_weighted_minutes": 0,
+      "existing_sessions_released_or_moved": 0
+    },
+    "oracle_max_allocated_minutes": 0,
+    "heuristic_allocation_gap_minutes": 0
+  },
+  {
+    "scenario": "pre-existing protected conflict",
+    "adaptive_after_change": {
+      "hard_violations": 1,
+      "remaining_minutes": 0,
+      "priority_weighted_minutes": 2400,
+      "existing_sessions_released_or_moved": 0
+    },
+    "fifo_nonadaptive_after_change": {
+      "hard_violations": 1,
+      "remaining_minutes": 0,
+      "priority_weighted_minutes": 2400,
+      "existing_sessions_released_or_moved": 0
+    },
+    "note": "Both retain one pre-existing protected capacity conflict; repair reports it explicitly."
+  }
+]

@@ -1,0 +1,75 @@
+[
+  {
+    "check": "lint",
+    "command": [
+      "/Users/daisychen/Desktop/CS projects/StudyFlow/.venv/bin/python",
+      "-m",
+      "ruff",
+      "check",
+      "studyflow",
+      "tests",
+      "scripts",
+      "migrations"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.02
+  },
+  {
+    "check": "tests",
+    "command": [
+      "/Users/daisychen/Desktop/CS projects/StudyFlow/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-m",
+      "not browser"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 17.96
+  },
+  {
+    "check": "benchmark",
+    "command": [
+      "/Users/daisychen/Desktop/CS projects/StudyFlow/.venv/bin/python",
+      "-m",
+      "scripts.benchmark"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.22
+  },
+  {
+    "check": "chromium",
+    "command": [
+      "/Users/daisychen/Desktop/CS projects/StudyFlow/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-m",
+      "browser"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 18.2
+  },
+  {
+    "check": "fresh-launch",
+    "command": [
+      "/Users/daisychen/Desktop/CS projects/StudyFlow/.venv/bin/python",
+      "scripts/fresh_setup.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.56
+  },
+  {
+    "check": "webkit",
+    "command": [
+      "/Users/daisychen/Desktop/CS projects/StudyFlow/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-m",
+      "browser"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 18.13
+  }
+]

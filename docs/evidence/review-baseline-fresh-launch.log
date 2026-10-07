@@ -1,0 +1,30 @@
+flask db upgrade: exit 0
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 676d9f85663e, foundation
+INFO  [alembic.runtime.migration] Running upgrade 676d9f85663e -> 0742c7029ce4, inputs
+INFO  [alembic.runtime.migration] Running upgrade 0742c7029ce4 -> b50de48de6b5, evidence
+INFO  [alembic.runtime.migration] Running upgrade b50de48de6b5 -> 75380717bd82, sessions
+INFO  [alembic.runtime.migration] Running upgrade 75380717bd82 -> c8f62c267518, adaptation
+INFO  [alembic.runtime.migration] Running upgrade c8f62c267518 -> 393457d12ea6, stale_settings
+
+Fresh normal Flask server + manual browser workflow: PASS; local date 2026-10-07; Chromium 153.0.8010.12; runtime requests localhost only.
+Fresh test server stopped explicitly.
+flask seed-demo --date 2026-10-07 --email release-demo@example.test --password synthetic-password: exit 0
+Synthetic account created: release-demo@example.test. Seed date: 2026-10-07.
+
+flask reconcile --email release@example.test: exit 0
+Reconciled past planned work; active/paused sessions remain unfinished.
+
+flask db check: exit 0
+No new upgrade operations detected.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.schemas
+INFO  [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.tables
+INFO  [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.types
+INFO  [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.constraints
+INFO  [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.defaults
+INFO  [alembic.runtime.plugins] setting up autogenerate plugin alembic.autogenerate.comments
+
+Opt-in seed, restart-independent database inspection, finite workload and foreign-key check: PASS.
