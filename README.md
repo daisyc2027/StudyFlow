@@ -19,21 +19,15 @@ Open **http://127.0.0.1:5001**. Create your own account and choose an IANA timez
 
 ## First use without demo data
 
-1. Create an account, then add a subject in **Feedback & Targets**. HL/SL is optional.
-2. Paste teacher comments into a feedback note, or create a target directly. Describe a topic/skill and a practical goal. Unknown starting need is valid. A target defaults to 60 practice minutes.
-3. Add an exam and link the relevant targets if useful. Practice ends one local day before an exam. Otherwise an optional last-study date applies.
-4. Set **Settings** weekly capacity and date overrides. Zero is valid; an override replaces the usual day. Only complete 30-minute blocks fit.
-5. Open **Study Plan** and generate it. Open a today's block to start/pause/resume/finish/skip. An outcome and target-specific task marks are optional. Finishing without an outcome provides no ability evidence.
-6. Review **Progress**. Completion uses finite requested budgets; actual active time is separate. Add practice explicitly when useful. Genuine input/evidence changes repair future work and explain significant changes; completed/active/paused/locked work stays protected.
+1. Create an account. **Today** guides you through a subject, a study goal and available study time. HL/SL is optional; a goal defaults to 60 minutes of initial practice.
+2. Use **Subjects → Open subject** for its goals, original teacher feedback and exams. Create a goal directly or choose **Create goal from this feedback**. Starting need can remain unknown. Read the full original comments under **Read original feedback**.
+3. In **Settings**, enter weekly minutes and any date exceptions. Zero means no study that day. Optionally link an exam to a goal; practice ends one local day before the exam. Only complete 30-minute blocks fit.
+4. Choose **Plan my week** in **Plan**, or **Create my plan** in Today's setup. The seven date links jump to each day's sessions. Edit study time or check goal deadlines if work is waiting; explanations and plan history expand on demand.
+5. From **Today**, choose **Start practice**, then pause/resume as needed. **Finish practice** opens an optional check-in: choose an outcome or **Finish without a rating**. The final choice saves completion; the check-in itself doesn't complete a session. Active time continues until completion unless paused. **Session options** contains miss, skip, lock and move controls.
+6. **Progress** separates initial practice completion, measured active time and recurring reviews. Add 30 minutes explicitly when needed. Finishing without a rating creates no ability evidence. Genuine changes repair future work; completed, active, paused and locked sessions stay protected.
+7. Optionally **Enable follow-up reviews** on a goal. These are ongoing 30-minute tasks separate from initial practice. Explicit completed-session outcomes determine the next 1/3/7/14/30-day interval; the existing greedy scheduler places it on or after that date. For a late rating, use **Record practice outcome → Completed session**. Review controls are also under **Progress → Review options**. Reviews default off.
 
-7. Optionally enable **Follow-up reviews** on a target card. This authorizes ongoing
-   30-minute review tasks in addition to its finite budget. Explicit completed-session
-   outcomes determine the next 1/3/7/14/30-day interval; the same greedy planner places
-   it on/after the recommended date. A missing review outcome pauses recurrence. Use
-   **Record practice outcome → Completed session** for a late rating; corrections replay
-   existing outcomes. Reviews default off for all existing targets.
-
-For an existing installation, stop the app and run `python -m flask --app studyflow db upgrade`
+The UI redesign needs no new migration or dependency. For an existing installation, stop the app and run `python -m flask --app studyflow db upgrade`
 before relaunching. This preserves existing records and adds the review schema.
 
 Overdue targets need a revised deadline before automatic placement. A locked or completed commitment can conflict with reduced capacity; the app displays the conflict rather than silently moving it. Past planned blocks become missed on the next authenticated visit. Unfinished active/paused blocks remain visible. There is no background daemon.
@@ -43,7 +37,7 @@ Overdue targets need a revised deadline before automatic placement. A locked or 
 Create a separate synthetic Maths/Economics account explicitly:
 
 ```sh
-python -m flask --app studyflow seed-demo --date 2026-10-06
+python -m flask --app studyflow seed-demo --date 2026-10-07
 ```
 
 The command prompts for a password of at least 10 characters. Default email is `demo@example.test`; `--email` can change it. Dates are relative to the supplied seed date: exams are ten days later, with three 60-minute targets and 60 minutes daily capacity. Choose a suitable current date when running later. The command refuses to overwrite an existing account; startup never seeds.

@@ -58,17 +58,42 @@ def linked(model, value, subject_id=None):
     return item.id
 
 
+@bp.get('/subjects')
+@login_required
+def subjects():
+    return render_template('subjects.html', subjects=rows(Subject),
+                           targets=rows(PracticeTarget), exams=rows(Exam),
+                           archived=archived_rows())
+
+
+def archived_rows():
+    return {kind: [r for r in rows(model, False) if r.archived] for kind, model in KINDS.items()}
+
+
+@bp.get('/subject/<int:identifier>')
+@login_required
+def subject_detail(identifier):
+    subject = owned(Subject, identifier)
+    return goal_page(subject)
+
+
+def goal_page(subject=None):
+    from .services.evidence import target_priority
+    from .services.reviews import summary
+    targets = [t for t in rows(PracticeTarget) if (not subject or t.subject_id == subject.id)
+               and not t.subject.archived]
+    return render_template('targets.html', targets=targets, subject=subject,
+                           reviews={t.id: summary(t, today(g.user)) for t in targets},
+                           priorities={t.id: target_priority(t, today(g.user)) for t in targets},
+                           feedback=[r for r in rows(FeedbackEntry) if subject and r.subject_id == subject.id],
+                           exams=[r for r in rows(Exam) if subject and r.subject_id == subject.id],
+                           archived=archived_rows())
+
+
 @bp.get('/targets')
 @login_required
 def targets():
-    from .services.evidence import target_priority
-    from .services.reviews import summary
-    targets = rows(PracticeTarget)
-    return render_template('targets.html', targets=targets,
-                           reviews={t.id: summary(t, today(g.user)) for t in targets},
-                           priorities={t.id: target_priority(t, today(g.user)) for t in targets},
-                           feedback=rows(FeedbackEntry), subjects=rows(Subject), exams=rows(Exam),
-                           archived={kind: [r for r in rows(model, False) if r.archived] for kind, model in KINDS.items()})
+    return goal_page()
 
 
 @bp.route('/edit/<kind>', defaults={'identifier': None}, methods=['GET', 'POST'])
@@ -141,8 +166,8 @@ def edit(kind, identifier):
             from .services.planning import repair
             repair(g.user, 'input change')
             db.session.commit()
-            flash('Saved. Your original feedback and practice goal are kept separately.')
-            return redirect(url_for('inputs.targets'))
+            flash(f'{"Study goal" if kind == "target" else kind.title()} saved.')
+            return redirect(url_for('inputs.subject_detail', identifier=item.id if kind == 'subject' else item.subject_id))
         except ValueError as exc:
             db.session.rollback()
             if saved_upload:
@@ -156,11 +181,11 @@ def edit(kind, identifier):
     values = request.form if request.method == 'POST' else {
         column.name: getattr(item, column.name) for column in model.__table__.columns
     } if item else {}
-    if not item and request.method == 'GET' and kind == 'target':
+    if not item and request.method == 'GET' and kind != 'subject':
         values = dict(values)
         if request.args.get('subject_id'):
             values['subject_id'] = linked(Subject, request.args['subject_id'])
-        if request.args.get('feedback_id'):
+        if kind == 'target' and request.args.get('feedback_id'):
             values['feedback_id'] = linked(FeedbackEntry, request.args['feedback_id'], values.get('subject_id'))
     return render_template('edit.html', kind=kind, item=item, values=values, error=error,
                            subjects=rows(Subject), feedback=rows(FeedbackEntry), exams=rows(Exam),
@@ -179,8 +204,9 @@ def archive(kind, identifier):
     from .services.planning import repair
     repair(g.user, 'archive')
     db.session.commit()
-    flash('Archived. Referenced records and history are retained.')
-    return redirect(url_for('inputs.targets'))
+    flash('Archived. History kept.')
+    return redirect(url_for('inputs.subjects') if kind == 'subject' else
+                    url_for('inputs.subject_detail', identifier=item.subject_id))
 
 
 @bp.route('/settings', methods=['GET', 'POST'])
@@ -237,4 +263,3 @@ def settings():
                            weekly={row.weekday: row.minutes for row in rows(WeeklyAvailability)},
                            overrides=rows(DateAvailabilityOverride),
                            days=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']), 422 if error else 200
-

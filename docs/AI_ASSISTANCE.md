@@ -16,3 +16,13 @@ A newly written test's earlier-date assumption was corrected to follow stable re
 that rationale is in PROGRESS.md. No IA write-up, personal reflection or independent
 student-authorship claim was added. All fixtures are synthetic; software checks make
 no claim about retention, learning improvement or human usability.
+
+On 2026-10-07 Codex implemented the user-approved Today-first UI in U1–U6 after a
+separate discussion prototype and staged plan. Work includes local CSS/SVG components,
+subject hierarchy, contextual navigation, optional finish check-in, concise copy and
+real HTTP/browser tests. Existing test selectors/literal copy checks were updated for
+intentional UI changes, retaining their behavioral assertions. Two new failing HTTP
+regressions exposed incorrect zero-capacity onboarding and omitted waiting-review
+work; the view now uses the unchanged shared allocator. Core services, authentication,
+models, migrations and dependencies are unchanged. No IA reflection or human usability
+claim is supplied. Actual gates and development failures are recorded in PROGRESS.md.

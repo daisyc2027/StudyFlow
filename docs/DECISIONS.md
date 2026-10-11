@@ -26,3 +26,24 @@ Only self-report outcomes attached to actual completed sessions transition inter
 teacher/general evidence continues to affect planning need. Stable repair may retain a
 later valid booking after an earlier recommendation; the UI labels that delay honestly.
 An equal-timestamp regression required stable session IDs in awaiting-outcome comparisons.
+
+## Today-first interface — 2026-10-07
+
+The user approved the discussion prototype and a six-stage UI implementation plan.
+Navigation is Today / Plan / Subjects / Progress, with Settings secondary. Existing
+/targets links still open all study goals; /subjects and owned /subject/<id> pages
+provide the new hierarchy. Creation and review toggles return to the relevant subject.
+Original teacher comments are previewed verbatim and expandable, never summarized by
+a model. Required initial practice minutes remain visible; optional context expands.
+
+Today prioritises unfinished work and posts start/resume through the existing CSRF,
+request-identity and version-protected lifecycle route. Waiting work comes from the
+shared allocator's read-only result so reviews aren't lost from the home state.
+Finish opens a GET check-in, with one explicit POST choice for a rating or none. GET
+does not complete practice; active time continues unless paused. Completion, evidence
+and repair remain one original transaction. Native links/forms/details support the
+flow without JavaScript; only the elapsed display uses the existing timer script.
+
+Seven native date links jump within the complete week. No frontend framework, schema,
+new dependency, remote asset or core service change was introduced. Presentation test
+selectors follow the approved copy and hierarchy; behavioral assertions are retained.

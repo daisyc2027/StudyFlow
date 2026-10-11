@@ -1,17 +1,18 @@
 # Local verification report — 2026-10-07 (Hong Kong)
 
-Base application plus adaptive-review extension, verified against the listed checks.
+Base application, adaptive reviews and Today-first UI U1–U6, verified against the listed checks.
 Final command: `.venv/bin/python scripts/check.py --all --webkit` — **exit 0**.
 
 | Check | Actual final result | Evidence |
 |---|---|---|
 | Lint (application/tests/scripts/migrations) | Passed | evidence/lint.log |
-| Pure functions / real SQLite / HTTP / Hypothesis | 91 passed; 8 browser tests deselected; 17.52s | evidence/tests.log |
-| Chromium | 8 passed; 91 non-browser deselected; 17.86s | evidence/chromium.log |
-| WebKit | 8 passed; 91 non-browser deselected; 17.78s | evidence/webkit.log |
+| Pure functions / real SQLite / HTTP / Hypothesis | 97 passed; 10 browser tests deselected; 20.32s | evidence/tests.log |
+| Chromium | 10 passed; 97 non-browser deselected; 23.53s | evidence/chromium.log |
+| WebKit | 10 passed; 97 non-browser deselected; 24.59s | evidence/webkit.log |
 | Fresh normal Flask CLI/browser launch | Seven migrations; manual workflow; no inferred outcome; review opt-in, late rating and shared placement; seed/reconcile/schema/FK checks; shutdown passed | evidence/fresh-launch.log; fresh-setup.log; fresh-server.log |
 | Fresh and populated migration tests | Retained old users/sessions/evidence/time/budget; review mode off; schema/FK checks passed | test_migrations.py; test_review_persistence.py |
 | FIFO / tiny exhaustive comparison | Six scenarios retained, including FIFO-better 30-minute gap | evidence/benchmark.log; scheduler-comparison.json; EVALUATION.md |
+| UI baseline | Lint; 91 non-browser, 8 Chromium, 8 WebKit; normal fresh launch and benchmark passed | evidence/ui-baseline-*.log; ui-baseline-summary.json |
 | Original baseline before extension | Lint; 57 non-browser, 6 Chromium, 6 WebKit; fresh launch and benchmark passed | evidence/review-baseline-*.log |
 | Dependency check | pip check passed; no dependencies added/changed | requirements.txt; base Stage 08 clean reproduction records |
 | Desktop/mobile review UI | Real journeys and screenshots; no overflow/fatal page/console errors | evidence/review-ui-*.png; review-loop-*-desktop.png; review-loop-*-mobile.png |
@@ -19,7 +20,7 @@ Final command: `.venv/bin/python scripts/check.py --all --webkit` — **exit 0**
 
 There are **0 failed checks, 0 skipped tests, no unexecuted mandatory checks and no
 remaining mandatory blockers**. Deselections are complementary marker groups; all tests
-run in the appropriate invocation. All original test files are unchanged. Main browser
+run in the appropriate invocation. Original behavioral assertions are retained; UI selectors and literal copy checks were updated for the approved redesign. Main browser
 journeys use actual services/database; no core mocks. Runtime requests stay on localhost.
 Test servers and browsers have explicit teardown; no deployment/server remains running.
 
@@ -56,3 +57,19 @@ awaiting-state regression, exact budget label, stable-booking test expectation a
 smoke ambiguous locator (failure log preserved). Source manifests record base and final
 files. Screenshots were visually inspected. These are software checks, not evidence of
 retention, learning improvement, human usability or formal accessibility compliance.
+
+
+UI-specific checks additionally cover fresh Today-led setup through unrated completion,
+keyboard activation, direct start/resume, non-mutating finish/back navigation, invalid
+marks preserving context, owned subject routes and contextual prefill, existing-plan
+zero-capacity state and separately counted waiting reviews. All eight main screens
+were checked at 1440px, 375px and 320px in both browser engines. Screenshots of Today,
+Subjects, Focus, finish, Plan, Progress, Settings and fresh production were inspected.
+No core scheduler/review/database mocks in these workflows.
+
+Final source diff confirms core services, authentication, models, migrations, benchmark
+and dependencies unchanged. UI source hashes are in evidence/source-manifest-ui.txt;
+previous manifests remain as historical evidence. Read-only development SQLite check:
+head ff0452cc31b6, two accounts, zero foreign-key violations. No reset performed.
+`git diff --check` passed; `pip check` passed with a non-blocking cache warning. UI
+development failures and their fixes are recorded in PROGRESS.md.

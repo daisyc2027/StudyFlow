@@ -35,7 +35,7 @@ def session_detail(identifier):
             action(g.user, session, name, version, key, rating=rating, earned=earned, possible=possible,
                    note=note, move_date=parse_date(request.form.get('move_date'), optional=True))
             db.session.commit()
-            flash('Session saved. Active time excludes pauses; your practice budget has not grown.')
+            flash('Practice finished.' if name == 'complete' else 'Session updated.')
             return redirect(url_for('sessions.session_detail', identifier=identifier))
         except ValueError as exc:
             db.session.rollback()
@@ -44,4 +44,7 @@ def session_detail(identifier):
                 abort(409, error)
     return render_template('session.html', session=session, seconds=active_seconds(session),
                            request_id=request.form.get('request_id', str(uuid4())), ratings=RATINGS,
-                           day=today(g.user), error=error), 422 if error else 200
+                           day=today(g.user), error=error,
+                           finishing=(request.args.get('finish') == '1' or
+                                      request.form.get('action') == 'complete' or 'outcome' in request.form)
+                           and session.state in ('in_progress', 'paused')), 422 if error else 200

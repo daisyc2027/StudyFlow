@@ -33,3 +33,8 @@ not merely an old completion checkbox. Do not regenerate already working compone
 Base stages 01–08 are retained as complete. Execute R1–R6 in REVIEW_EXTENSION.md
 sequentially, reusing stages 05–08 services and acceptance checks. Every gate records
 its actual targeted/regression results in docs/PROGRESS.md.
+
+## Authorized interface redesign
+
+Original and review stages remain complete. Follow U1–U6 in [UI_REDESIGN.md](UI_REDESIGN.md)
+for the user-approved Today-first interface; preserve every original domain requirement.

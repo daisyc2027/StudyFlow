@@ -220,3 +220,138 @@ is at ff0452cc31b6, contains 1 user, and has no FK violations; no reset was perf
 `.venv/bin/python -m flask --app studyflow db check`: no schema drift. Visually inspected
 fresh-production-review.png: ordinary/review blocks share 60-minute capacity tomorrow,
 with the pre-existing completed-work conflict today shown honestly. No remaining blocker.
+
+## UI redesign U1 — baseline and scope
+
+User approved the Today-first discussion design and six-stage implementation plan.
+Plan/acceptance gates: brief/UI_REDESIGN.md. Inspected AGENTS, domain/test contracts,
+completed progress, actual Flask routes/templates, services and browser journeys.
+Scope: presentation, read-only view queries and contextual navigation; preserve core
+algorithms, persistence and accounting. Baseline verification follows before UI edits.
+
+U1 PASSED: `.venv/bin/python scripts/check.py --all --webkit` exit 0; lint,
+91 non-browser, 8 Chromium, 8 WebKit, six FIFO/oracle cases and fresh normal launch
+passed. Copies retained in docs/evidence/ui-baseline-*.log and ui-baseline-summary.json.
+
+## UI redesign U2 — foundation and Today
+Plan: reusable local CSS/SVG shell, four destinations with current-page semantics,
+responsive navigation, next real session with direct start/resume, unfinished-first
+selection and persisted subject/goal/time setup steps. Acceptance: real HTTP setup and
+unfinished checks, browser direct start/resume, desktop/320px and existing screen checks.
+Tests use the new Today/Subjects/Plan navigation names; original action/accounting
+assertions retained. No service, schema, dependency or learning-rule changes.
+Targeted `.venv/bin/python -m pytest -q tests/test_ui.py -m 'not browser'`: 2 passed.
+
+U2 PASSED: `scripts/check.py` lint clean, 93 non-browser tests and six benchmarks
+passed. First regression found an old literal dashboard heading in test_auth; updated
+it to assert the actual approved `<h1>Today</h1>`, keeping auth/CSRF assertions.
+Chromium `pytest -q tests/test_ui.py tests/test_browser.py -m browser -k
+'today_direct or auth or saved_plan or main_screens'`: 4 passed. Desktop and 320px
+Today screenshots visually inspected. Diff scope: templates/CSS, read-only home query,
+presentation tests/docs only; lifecycle/scheduler/database untouched.
+
+## UI redesign U3 — subjects and setup
+Plan: subjects overview → owned subject detail, contextual create/save navigation,
+goal terminology and shorter forms, original feedback preview/full-text disclosure,
+compact review controls. Keep /targets as an accessible all-goals view for existing
+links. Acceptance: HTTP ownership/prefill/persistence, real input/upload/archive
+browser paths and accumulated non-browser regressions. Review opt-in remains explicit.
+
+U3 PASSED: targeted HTTP `pytest -q tests/test_ui.py tests/test_inputs.py
+tests/test_experience.py tests/test_review_interface.py -m 'not browser'`: 24 passed.
+Chromium `pytest -q tests/test_browser.py -m browser -k 'inputs or edit_evidence or
+full_feedback or main_screens'`: 4 passed. `scripts/check.py`: lint, 94 non-browser
+tests and six benchmarks passed. Visually inspected subject overview/detail mobile.
+New subject/detail/prefill routes enforce ownership; original text is retained verbatim.
+Browser journeys now navigate subject cards and open explicit options, retaining all
+original persistence, correction, attachment, archive, lock and accounting assertions.
+Scope reviewed: existing writes/repair still transactional; no data model changes.
+
+## UI redesign U4 — focus and finish
+Plan: focused elapsed timer, start/pause/resume, one Finish link to a server-rendered
+optional check-in, three explicit outcomes or Finish without a rating. Session options
+hold skip/miss/lock/move. GET check-in does not complete or rate; final POST remains
+atomic through the original lifecycle service. Acceptance: invalid marks retain form,
+unrated/rated completion, duplicate safety, timer refresh, real dated review journey.
+
+U4 checks: targeted HTTP/lifecycle/review loop 20 passed; `scripts/check.py` lint,
+95 non-browser tests and six benchmarks passed. First Chromium run: 8 passed, 1 failed
+because a decorative arrow changed the exact Start practice accessible name. Marked
+the arrow aria-hidden (kept the exact assertion). Full browser rerun follows.
+
+U4 PASSED: full Chromium `pytest -q -m browser`: 9 passed. Added real browser
+check-in/back/unrated completion checks with actual SQLite state, no inferred evidence
+and unchanged 60-minute demand. Visually inspected 320px focus/check-in screenshots.
+All original lifecycle, dated intervals, missing/replacement and atomicity checks pass.
+Scope reviewed: lifecycle/evidence/review engines unchanged; GET only selects a view.
+
+## UI redesign U5 — Plan, Progress and Settings
+Plan: seven date jump links and compact session rows; short next actions for unplaced
+work/conflicts; inspectable reasons/history. Progress leads with initial work and actual
+time, separate recurring work, details on demand. Compact weekly inputs and shorter
+evidence/context copy. Acceptance: existing capacity/deadline/manual/lock/correction
+journeys, separate review accounting and desktop/mobile/link checks; regressions.
+
+U5 development: Chromium 9 passed. Targeted/regression checks exposed one obsolete
+Plan sentence assertion; replaced it with the new concise unfinished date AND actual
+continue action, keeping underlying preserved-state checks. Empty-state review found
+zero capacity incorrectly restarted onboarding and the home nudge counted ordinary
+work only. Added two failing real HTTP regressions, then derived waiting minutes from
+the unchanged shared allocator result and kept onboarding conditional on setup state.
+No workload/accounting engine changes. Final gate rerun follows.
+
+U5 PASSED: targeted `pytest -q tests/test_ui.py tests/test_adaptation.py -m
+'not browser'`: 16 passed after fixes. `scripts/check.py`: lint, 97 non-browser
+tests and all six benchmarks passed. Full Chromium supporting-screen journey: 9
+passed. Plan/Progress desktop/mobile screenshots visually reviewed; compact review
+controls remain accessible under Review options. Scope: no service/model/migration
+changes; existing capacity and separate review totals are displayed faithfully.
+
+## UI redesign U6 — final verification and handoff
+Plan: add a first-use Today → subject → goal → study time → plan → focus → unrated
+finish browser journey, exercise keyboard/date links, test all main screens at 320px
+and 375px, full Chromium/WebKit and normal fresh-server checks. Retain migration,
+randomized invariant and independent scheduler evaluations. Review complete diff,
+inspect screenshots, update run instructions and actual limitations/results.
+
+U6 PASSED — `.venv/bin/python scripts/check.py --all --webkit` exit 0:
+- Lint: passed.
+- Pure functions / real SQLite / HTTP / seeded invariants: 97 passed (20.32s).
+- Chromium: 10 passed (23.53s); WebKit: 10 passed (24.59s).
+- Fresh normal Flask server: seven migrations, manual no-demo flow, unrated completion,
+  review opt-in/late outcome/shared allocation, seed/reconcile/schema/FK checks passed.
+  Production local date 2026-10-07. Test servers and browsers explicitly stopped.
+- Existing populated-schema migrations passed in the non-browser suite. UI needs no new
+  migration. Read-only development DB check: head ff0452cc31b6, two accounts, zero FK
+  violations. No reset or seed into existing user records was performed.
+- Six original independent FIFO/tiny-oracle cases retained, including the 30-minute gap.
+  Existing randomized settings/seeds unchanged; no unresolved counterexample.
+- Final suite: zero failures/skips. Browser/non-browser deselections are complementary.
+  New Today-led browser workflow completes first setup using real routes/SQLite, keyboard
+  activation, date jump links, unrated finish and unchanged finite demand/no evidence.
+- Main screen checks at 1440px, 375px and 320px passed in both engines. Visually inspected
+  Today desktop/mobile, subject overview/detail, focus/check-in, Plan/Progress, WebKit
+  Settings and fresh production ordinary/review/conflict captures; no fatal console error.
+- Diff audit: services, auth, models, clock, attachments, migrations, dependencies and
+  independent benchmark unchanged. Source manifest covers 67 files; previous evidence
+  preserved. Existing behavioral assertions retained; approved copy/navigation updated.
+- `git diff --check` exit 0. `.venv/bin/python -m pip check` exit 0, no broken requirements;
+  pip cache-permission warning is non-blocking. No dependency added.
+- README, HANDOFF, TEST_REPORT, DECISIONS, ACCEPTANCE and AI_ASSISTANCE updated. No IA
+  write-up or fabricated human usability/reflection claim. All U1–U6 stages complete.
+
+Additional command detail: U4 targeted `.venv/bin/python -m pytest -q tests/test_ui.py
+tests/test_adaptation.py tests/test_review_loop.py -m 'not browser'`: 20 passed.
+U5 initial targeted `.venv/bin/python -m pytest -q tests/test_experience.py
+tests/test_review_interface.py tests/test_ui.py tests/test_scheduler.py
+tests/test_adaptation.py -m 'not browser'`: 33 passed, 1 obsolete-copy assertion failed.
+Initial U5 `scripts/check.py`: 94 passed, same assertion failed. Updated the sentence
+check to retain the actual unfinished date/action; subsequent recorded gates all pass.
+Two empty-state tests were first run with `pytest -q tests/test_ui.py -k
+'without_capacity or waiting_review'`: both failed, then passed in the final suite after
+the view fix. During adding those tests an invalid-marks assertion block was briefly
+misplaced; restored it to its original test before the final targeted/full verification.
+
+Remaining limits: first visual implementation uses a light theme and native date jump
+links within the complete week. Automated tests do not establish human usability or
+formal accessibility. Original heuristic/local-runtime limitations remain in HANDOFF.

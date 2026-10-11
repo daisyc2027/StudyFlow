@@ -27,7 +27,7 @@ def test_progress_accounting_and_explicit_extra_practice(user, app):
         assert result['unallocated'] == 0
         assert len(result['evidence']) == 0
     html = user.get('/progress').text
-    assert '30 / 60 practice minutes satisfied' in html
+    assert '30 / 60 min initial practice completed' in html
     assert '10.0' in html
     assert post(user, '/target/1/add-practice', {'version': '1'}).status_code == 302
     assert post(user, '/target/1/add-practice', {'version': '1'}).status_code == 409

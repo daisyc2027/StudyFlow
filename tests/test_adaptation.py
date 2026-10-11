@@ -105,7 +105,7 @@ def test_reconcile_next_day_preserves_unfinished(user, app):
     session_action(user, 1, 'start', 1)
     app.config['CLOCK'] = lambda: datetime(2030, 1, 8, 12, tzinfo=timezone.utc)
     html = user.get('/plan').text
-    assert 'Unfinished in progress block from' in html
+    assert 'Unfinished from 2030-01-07' in html and 'Continue Integration' in html
     with app.app_context():
         assert db.session.get(StudySession, 1).state == 'in_progress'
         assert db.session.get(StudySession, 2).state == 'missed'

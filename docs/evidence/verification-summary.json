@@ -12,7 +12,7 @@
       "migrations"
     ],
     "exit_code": 0,
-    "elapsed_seconds": 0.02
+    "elapsed_seconds": 0.03
   },
   {
     "check": "tests",
@@ -25,7 +25,7 @@
       "not browser"
     ],
     "exit_code": 0,
-    "elapsed_seconds": 17.96
+    "elapsed_seconds": 20.75
   },
   {
     "check": "benchmark",
@@ -48,7 +48,7 @@
       "browser"
     ],
     "exit_code": 0,
-    "elapsed_seconds": 18.2
+    "elapsed_seconds": 23.89
   },
   {
     "check": "fresh-launch",
@@ -57,7 +57,7 @@
       "scripts/fresh_setup.py"
     ],
     "exit_code": 0,
-    "elapsed_seconds": 3.56
+    "elapsed_seconds": 3.76
   },
   {
     "check": "webkit",
@@ -70,6 +70,6 @@
       "browser"
     ],
     "exit_code": 0,
-    "elapsed_seconds": 18.13
+    "elapsed_seconds": 25.01
   }
 ]

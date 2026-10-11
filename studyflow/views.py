@@ -1,4 +1,5 @@
 from flask import Blueprint, g, render_template
+from uuid import uuid4
 
 from .auth import login_required
 from .clock import today
@@ -12,7 +13,18 @@ bp = Blueprint('main', __name__)
 @bp.get('/')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', report=report(g.user), day=today(g.user))
+    from .inputs import rows
+    from .models import Subject
+    from .services.planning import calculate
+    data = report(g.user)
+    plan = calculate(g.user, place=False)
+    active = [i for i in data['items'] if not i.target.archived and not i.target.subject.archived]
+    next_session = next(iter(data['unfinished'] or data['today_sessions']), None)
+    return render_template('dashboard.html', report=data, day=today(g.user),
+                           next_session=next_session, request_id=str(uuid4()),
+                           subjects=rows(Subject), active_items=active,
+                           has_time=any(d.capacity >= 30 for d in plan.days),
+                           waiting_minutes=sum(item.minutes for item in plan.unallocated))
 
 
 @bp.get('/progress')
@@ -38,5 +50,5 @@ def add_practice(identifier):
     target.version += 1
     repair(g.user, 'explicit extra practice')
     db.session.commit()
-    flash('30 minutes added to this practice budget.')
+    flash('30 minutes added to initial practice.')
     return redirect(url_for('main.progress'))

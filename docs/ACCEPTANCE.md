@@ -42,3 +42,20 @@ All original A01–A12 cases remain required. The additional mapping is:
 | Real UI/mobile opt-in/no capacity/disable | test_browser_review_opt_in_no_data_outcome_no_capacity_disable |
 | Complete fresh dated review loop + persistence | test_browser_complete_dated_review_loop (both engines) |
 | Normal production-clock setup + review enable/late outcome | scripts/fresh_setup.py via scripts/check.py --all |
+
+## Today-first UI acceptance
+
+All original A01–A12 and review requirements remain mandatory. UI labels and browser
+navigation steps were intentionally updated; state/accounting assertions are retained.
+
+| Requirement | Test evidence |
+|---|---|
+| Persisted setup and direct start/resume | test_ui.py::test_today_setup_and_direct_start |
+| Unfinished practice before new work | test_today_surfaces_unfinished_before_planned |
+| Owned subject pages/context, original feedback | test_subject_detail_context_and_ownership |
+| Check-in GET is non-mutating; invalid marks retain context | test_finish_check_in_get_preserves_state_and_invalid_marks |
+| Existing plan with zero capacity; separate waiting reviews | test_today_existing_plan_without_capacity_is_not_onboarding; test_today_includes_waiting_review_separately |
+| Desktop/320px direct start/pause/resume/back/unrated finish | test_today_direct_start_and_mobile_navigation |
+| Fresh Today-led setup, date jumps, keyboard, no inferred outcome | test_today_first_use_keyboard_and_unrated_finish |
+| Every main screen at 1440px/375px/320px; internal links | test_browser.py::test_main_screens_mobile_empty_and_links |
+| All retained input, archive, PDF, locks, moves, repair and review paths | Existing browser journeys, in Chromium and WebKit |

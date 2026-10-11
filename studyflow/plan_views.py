@@ -32,5 +32,5 @@ def plan():
 def generate_plan():
     result = generate(g.user)
     db.session.commit()
-    flash(f'{len(result.assignments)} new blocks saved. Existing commitments are retained.')
+    flash(f'{len(result.assignments)} new sessions added.' if result.assignments else 'Your plan is up to date.')
     return redirect(url_for('plan.plan'))

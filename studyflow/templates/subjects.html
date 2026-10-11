@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block title %}Subjects · StudyFlow{% endblock %}{% block content %}
+<div class="page-heading"><div><p class="eyebrow">WHAT YOU’RE WORKING ON</p><h1>Subjects</h1><p class="muted">A home for each subject’s goals and feedback.</p></div><a class="button" href="{{ url_for('inputs.edit',kind='subject') }}">Add subject <span aria-hidden="true">+</span></a></div>
+<div class="grid subject-grid">{% for subject in subjects %}
+<article class="card subject-card" data-subject-id="{{ subject.id }}"><div class="subject-symbol" aria-hidden="true">{{ icon('book') }}</div><p class="eyebrow">{{ subject.level or 'YOUR SUBJECT' }}</p><h2>{{ subject.name }}</h2><p class="muted">{% set goal_count = targets|selectattr('subject_id','equalto',subject.id)|list|length %}{{ goal_count }} study {{ 'goal' if goal_count == 1 else 'goals' }}</p><div class="subject-preview">{% for target in targets if target.subject_id == subject.id %}{% if loop.index <= 3 %}<p>{{ target.topic }}</p>{% endif %}{% else %}<p class="muted">Choose your first goal.</p>{% endfor %}</div>
+<a class="button quiet" href="{{ url_for('inputs.subject_detail',identifier=subject.id) }}">Open subject <span class="sr-only"> · {{ subject.name }}</span> →</a></article>
+{% else %}<section class="card empty-state"><div class="subject-symbol">{{ icon('book') }}</div><h2>What would you like to work on?</h2><p class="muted">Add a subject, then choose one practical goal.</p><a href="{{ url_for('inputs.edit',kind='subject') }}">Add your first subject →</a></section>{% endfor %}</div>
+<div class="section-heading"><a href="{{ url_for('inputs.targets') }}">All study goals →</a></div>
+{% include 'archives.html' %}
+{% endblock %}

@@ -27,5 +27,5 @@ def toggle(identifier):
     except ValueError as exc:
         db.session.rollback()
         abort(409, str(exc))
-    flash('Review preference saved. Follow-up review work is separate from the initial practice budget.')
-    return redirect(url_for('inputs.targets'))
+    flash('Review preference saved.')
+    return redirect(url_for('inputs.subject_detail', identifier=target.subject_id))

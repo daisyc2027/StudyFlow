@@ -8,7 +8,7 @@ def test_accounts_health_csrf(client, app):
     assert client.get("/").status_code == 302
     assert client.post("/register", data={"email": "a@b.test"}).status_code == 400
     assert register(client).status_code == 302
-    assert "Your study space" in client.get("/").text
+    assert "<h1>Today</h1>" in client.get("/").text
     assert post(client, "/logout").status_code == 302
     assert post(client, "/login", {"email": "synthetic@example.test", "password": "wrong"},
                 "/login").status_code == 422

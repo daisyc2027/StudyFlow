@@ -43,3 +43,15 @@ Desktop/mobile dated-loop screenshots were visually inspected. Remaining limits 
 heuristic intervals, small local history scans, visit-triggered reconciliation, a greedy
 allocation gap and unevaluated learning effectiveness. This is an agent review, not a
 human evaluation or independent certification.
+
+## Today-first UI review — 2026-10-07
+
+Agent review of U1–U6: real Today start/resume posts preserve CSRF/version/request
+identity; subject pages and contextual prefill use owned records. GET finish/back is
+non-mutating; the original atomic lifecycle saves completion, optional evidence and
+repair. Waiting minutes use the shared allocator and keep ordinary/review accounting
+separate. Original feedback remains escaped verbatim under disclosure. No core services,
+auth, models, migrations, dependencies or benchmark changes. Existing browser assertions
+were retained with intentional copy/navigation updates. Full final verification and
+source/viewport evidence are in TEST_REPORT.md and PROGRESS.md. No known mandatory
+blocker remains; human usability and formal accessibility remain untested.
